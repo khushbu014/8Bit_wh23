@@ -11,6 +11,7 @@ import textacy
 import requests
 import json
 import time
+import pandas
 from urllib.error import HTTPError
 
 
@@ -19,6 +20,8 @@ def my_form():
     return render_template('/index.html')
 processed_text=" k "
 myjson={}
+image=''
+listWiki=[]
 @app.route('/', methods=['POST'])
 def my_form_post():
     flag=0
@@ -31,10 +34,13 @@ def my_form_post():
         print("DONE")
     else:
         return ("page does not exist.try something else")
-    return render_template('/profile.html',myjson=myjson,processed_text=processed_text)
+    return render_template('/profile.html',myjson=myjson,processed_text=processed_text,image=image,listWiki=listWiki)
 
     #return processed_text
     # return render_template('/profile.html')
+
+
+
 def summarize():
     name=processed_text
     scraped_data = urllib.request.urlopen('https://en.wikipedia.org/api/rest_v1/page/html/'+processed_text)
@@ -44,10 +50,22 @@ def summarize():
     #     handler = urllib.request.urlopen(req)
     # except HTTPError as e:
     #     content = e.read()
+
     article = scraped_data.read()
 
     parsed_article = BeautifulSoup(article,'lxml')
-
+    image_tags = parsed_article.findAll('img')
+    # print out image urls
+    count=0
+    string_image=''
+    for image_tag in image_tags:
+        if(count==0):
+            string_image=image_tag.get('src')
+            break
+        count=count+1
+    string_image='https:'+string_image
+    global image
+    image=(string_image)
     paragraphs = parsed_article.find_all('p')
 
     article_text = ""
@@ -116,8 +134,26 @@ def summarize():
                 m.append(fact)
 
     global myjson
-    myjson = m
+    if(len(m)>10):
+        myjson = m[:10]
+    else:
+        myjson = m
     print (myjson)
+
+
+    urlpage =  "https://en.wikipedia.org/wiki/"+processed_text
+    data = pandas.read_html(urlpage)[0]
+    null = data.isnull()
+    global listWiki
+    listWiki=[]
+    for x in range(2,len(data)):
+        print (data)
+        first = data.iloc[x][0]
+        second = data.iloc[x][1] if not null.iloc[x][1] else ""
+        print(first,second,"\n")
+        if((str(first) + ' ' + second).count(' ')>2):
+            listWiki.append(str(first) + ' ' + second)
+
     return 1
 
 if __name__=='__main__':

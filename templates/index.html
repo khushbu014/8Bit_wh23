@@ -2,6 +2,45 @@
 <html lang="en">
 
   <head>
+    <style>
+    .lds-facebook {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 6px;
+  width: 13px;
+  background: #fff;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+  left: 6px;
+  animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+  left: 26px;
+  animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+  left: 45px;
+  animation-delay: 0;
+}
+@keyframes lds-facebook {
+  0% {
+    top: 6px;
+    height: 51px;
+  }
+  50%, 100% {
+    top: 19px;
+    height: 26px;
+  }
+}
+
+    </style>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,7 +87,7 @@
                     </div>
                     </form> -->
                     <form id="b1" name="searchbox" method="POST">
-                  <input name="text" style="width: 110%;" placeholder="Enter your link.....">
+                  <input name="text" style="width: 110%;" placeholder="Fire Your Query.....">
                 </div>
                 <div class="col-4 col-md-3">
                   <input type="submit" value="Search" class="btn btn-primary">
@@ -103,6 +142,7 @@
             <p class="text-muted">Give us the link and get downloadable insights and facts from the page</p>
           </div>
         </div>
+        <div class="lds-facebook"><div></div><div></div><div></div></div>
       </div>
     </section>
     </section> -->
